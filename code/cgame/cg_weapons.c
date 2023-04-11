@@ -1417,6 +1417,8 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 		fovOffset = 0;
 	}*/
 
+	fovOffset = 0;
+
 	cent = &cg.predictedPlayerEntity;	// &cg_entities[cg.snap->ps.clientNum];
 	CG_RegisterWeapon( ps->weapon );
 	weapon = &cg_weapons[ ps->weapon ];

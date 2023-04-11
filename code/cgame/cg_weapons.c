@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -1410,11 +1411,11 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 	}
 
 	// drop gun lower at higher fov
-	if ( cg_fov.integer > 90 ) {
+	/*if ( cg_fov.integer > 90 ) {
 		fovOffset = -0.2 * ( cg_fov.integer - 90 );
 	} else {
 		fovOffset = 0;
-	}
+	}*/
 
 	cent = &cg.predictedPlayerEntity;	// &cg_entities[cg.snap->ps.clientNum];
 	CG_RegisterWeapon( ps->weapon );

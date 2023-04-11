@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -481,18 +482,18 @@ static int CG_CalcFov( void ) {
 
 	if ( cg.predictedPlayerState.pm_type == PM_INTERMISSION ) {
 		// if in intermission, use a fixed value
-		fov_x = 90;
+		fov_y = 90;
 	} else {
 		// user selectable
 		if ( cgs.dmflags & DF_FIXED_FOV ) {
 			// dmflag to prevent wide fov for all clients
-			fov_x = 90;
+			fov_y = 90;
 		} else {
-			fov_x = cg_fov.value;
-			if ( fov_x < 1 ) {
-				fov_x = 1;
-			} else if ( fov_x > 160 ) {
-				fov_x = 160;
+			fov_y = cg_fov.value;
+			if (fov_y < 1 ) {
+				fov_y = 1;
+			} else if (fov_y > 160 ) {
+				fov_y = 160;
 			}
 		}
 
@@ -507,23 +508,23 @@ static int CG_CalcFov( void ) {
 		if ( cg.zoomed ) {
 			f = ( cg.time - cg.zoomTime ) / (float)ZOOM_TIME;
 			if ( f > 1.0 ) {
-				fov_x = zoomFov;
+				fov_y = zoomFov;
 			} else {
-				fov_x = fov_x + f * ( zoomFov - fov_x );
+				fov_y = fov_y + f * ( zoomFov - fov_y);
 			}
 		} else {
 			f = ( cg.time - cg.zoomTime ) / (float)ZOOM_TIME;
 			if ( f > 1.0 ) {
-				fov_x = fov_x;
+				fov_y = fov_y;
 			} else {
-				fov_x = zoomFov + f * ( fov_x - zoomFov );
+				fov_y = zoomFov + f * (fov_y - zoomFov );
 			}
 		}
 	}
 
-	x = cg.refdef.width / tan( fov_x / 360 * M_PI );
-	fov_y = atan2( cg.refdef.height, x );
-	fov_y = fov_y * 360 / M_PI;
+	x = cg.refdef.height / tan( fov_y / 360 * M_PI );
+	fov_x = atan2( cg.refdef.width, x );
+	fov_x = fov_x * 360 / M_PI;
 
 	// warp if underwater
 	contents = CG_PointContents( cg.refdef.vieworg, -1 );

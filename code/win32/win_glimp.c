@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -573,7 +574,9 @@ static qboolean GLW_InitDriver( const char *drivername, int colorbits )
 **
 ** Responsible for creating the Win32 window and initializing the OpenGL driver.
 */
-#define	WINDOW_STYLE	(WS_OVERLAPPED|WS_BORDER|WS_CAPTION|WS_VISIBLE)
+#define	WINDOW_STYLE	(WS_OVERLAPPED|WS_BORDER|WS_CAPTION|WS_VISIBLE|WS_MINIMIZEBOX|WS_SYSMENU)
+//#define WINDOW_STYLE	(WS_OVERLAPPED|WS_BORDER|WS_CAPTION|WS_VISIBLE|WS_MINIMIZEBOX|WS_SYSMENU|WS_MAXIMIZEBOX|WS_THICKFRAME)
+
 static qboolean GLW_CreateWindow( const char *drivername, int width, int height, int colorbits, qboolean cdsFullscreen )
 {
 	RECT			r;

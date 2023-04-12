@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -33,10 +34,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define JPEG_INTERNALS
 #include "../jpeg-6/jpeglib.h"
 
+// include SPNG
+#define SPNG_STATIC
+#include "../spng/spng.h"
+
 
 static void LoadBMP( const char *name, byte **pic, int *width, int *height );
 static void LoadTGA( const char *name, byte **pic, int *width, int *height );
 static void LoadJPG( const char *name, byte **pic, int *width, int *height );
+static void LoadPNG( const char *name, byte **pic, int *width, int *height );
 
 static byte			 s_intensitytable[256];
 static unsigned char s_gammatable[256];
@@ -1357,7 +1363,21 @@ static void LoadTGA ( const char *name, byte **pic, int *width, int *height)
   ri.FS_FreeFile (buffer);
 }
 
-static void LoadJPG( const char *filename, unsigned char **pic, int *width, int *height ) {
+/*
+=========================================================
+
+JPEG LOADING
+
+=========================================================
+*/
+
+/*
+=============
+LoadJPG
+=============
+*/
+
+static void LoadJPG( const char *filename, byte **pic, int *width, int *height ) {
   /* This struct contains the JPEG decompression parameters and pointers to
    * working space (which is allocated as needed by the JPEG library).
    */
@@ -1802,6 +1822,103 @@ void SaveJPG(char * filename, int quality, int image_width, int image_height, un
   /* And we're done! */
 }
 
+/*
+=========================================================
+
+PNG LOADING
+
+=========================================================
+*/
+
+void* spng_alloc_handler(size_t size)
+{
+	return ri.Malloc(size);
+}
+
+void spng_free_handler(void *buf)
+{
+	ri.Free(buf);
+}
+
+/*
+=============
+LoadPNG
+=============
+*/
+static void LoadPNG(const char *filename, byte **pic, int *width, int *height)
+{
+	byte	*buffer;
+	byte	*out;
+	int		len;
+	int		outlen;
+
+	*pic = NULL;
+
+	//
+	// load the file
+	//
+	len = ri.FS_ReadFile((char *)filename, (void **)&buffer);
+	if (!buffer) {
+		return;
+	}
+
+	//
+	// parse the PNG file
+	//
+
+	/*struct spng_alloc alloc = 
+	{
+		spng_alloc_handler,
+		NULL,
+		NULL,
+		spng_free_handler
+	};*/
+
+	// create spng decoder context
+	//spng_ctx *ctx = spng_ctx_new2(&alloc, 0);
+	spng_ctx *ctx = spng_ctx_new(0);
+	// set decode buffer
+	spng_set_png_buffer(ctx, buffer, len);
+
+	// get ihdr thingy?
+	struct spng_ihdr ihdr;
+	int ret = spng_get_ihdr(ctx, &ihdr);
+
+	if (ret != 0)
+	{
+		ri.Printf(PRINT_DEVELOPER, "PNG file %s was malformed\n", filename);
+		ri.FS_FreeFile(buffer);
+		return;
+	}
+
+	*width = ihdr.width;
+	*height = ihdr.height;
+
+	// get output data size
+	spng_decoded_image_size(ctx, SPNG_FMT_RGBA8, &outlen);
+
+	out = ri.Malloc(outlen);
+
+	// actually decode the image
+	spng_decode_image(ctx, out, outlen, SPNG_FMT_RGBA8, 0);
+	
+	*pic = out;
+
+	/*if (raw - (byte *)pcx > len)
+	{
+		ri.Printf(PRINT_DEVELOPER, "PCX file %s was malformed", filename);
+		ri.Free(*pic);
+		*pic = NULL;
+	}*/
+
+	ri.FS_FreeFile(buffer);
+
+	// free context
+	spng_ctx_free(ctx);
+
+	ri.Printf(PRINT_DEVELOPER, "PNG file %s loaded\n", filename);
+}
+
 //===================================================================
 
 /*
@@ -1841,7 +1958,10 @@ void R_LoadImage( const char *name, byte **pic, int *width, int *height ) {
 		LoadBMP( name, pic, width, height );
 	} else if ( !Q_stricmp( name+len-4, ".jpg" ) ) {
 		LoadJPG( name, pic, width, height );
+	} else if (!Q_stricmp(name + len - 4, ".png")) {
+		LoadPNG( name, pic, width, height );
 	}
+
 }
 
 

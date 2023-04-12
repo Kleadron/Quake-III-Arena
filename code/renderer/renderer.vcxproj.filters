@@ -26,6 +26,12 @@
       <UniqueIdentifier>{b875015b-1fdd-41e2-8588-62453655ebcd}</UniqueIdentifier>
       <Extensions>*.h</Extensions>
     </Filter>
+    <Filter Include="png">
+      <UniqueIdentifier>{bdbd1d9d-eb68-44d2-946f-801f170a9e74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="miniz">
+      <UniqueIdentifier>{6def3272-139f-40d6-8145-ce4967bc24c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ref_trin.def">
@@ -318,6 +324,12 @@
     <ClCompile Include="..\ft2\ttsbit.c">
       <Filter>FreeType2</Filter>
     </ClCompile>
+    <ClCompile Include="..\spng\spng.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\miniz\miniz.c">
+      <Filter>miniz</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\qcommon\cm_public.h">
@@ -385,6 +397,12 @@
     </ClInclude>
     <ClInclude Include="..\jpeg-6\jversion.h">
       <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\spng\spng.h">
+      <Filter>png</Filter>
+    </ClInclude>
+    <ClInclude Include="..\miniz\miniz.h">
+      <Filter>miniz</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

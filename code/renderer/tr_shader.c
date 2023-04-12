@@ -2481,15 +2481,22 @@ shader_t *R_FindShader( const char *name, int lightmapIndex, qboolean mipRawImag
 
 	//
 	// if not defined in the in-memory shader descriptions,
-	// look for a single TGA, BMP, or PCX
+	// look for a single TGA, BMP, PCX, or PNG
 	//
 	Q_strncpyz( fileName, name, sizeof( fileName ) );
 	COM_DefaultExtension( fileName, sizeof( fileName ), ".tga" );
 	image = R_FindImageFile( fileName, mipRawImage, mipRawImage, mipRawImage ? GL_REPEAT : GL_CLAMP );
 	if ( !image ) {
-		ri.Printf( PRINT_DEVELOPER, "Couldn't find image for shader %s\n", name );
-		shader.defaultShader = qtrue;
-		return FinishShader();
+		// try for PNG
+		Q_strncpyz(fileName, name, sizeof(fileName));
+		COM_DefaultExtension(fileName, sizeof(fileName), ".png");
+		image = R_FindImageFile(fileName, mipRawImage, mipRawImage, mipRawImage ? GL_REPEAT : GL_CLAMP);
+		if (!image)
+		{
+			ri.Printf(PRINT_DEVELOPER, "Couldn't find image for shader %s\n", name);
+			shader.defaultShader = qtrue;
+			return FinishShader();
+		}
 	}
 
 	//

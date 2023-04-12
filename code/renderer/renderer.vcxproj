@@ -1155,6 +1155,8 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='vector|Win32'">MaxSpeed</Optimization>
     </ClCompile>
+    <ClCompile Include="..\miniz\miniz.c" />
+    <ClCompile Include="..\spng\spng.c" />
     <ClCompile Include="..\win32\win_gamma.c">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug TA|Win32'">Disabled</Optimization>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug TA|Win32'">EnableFastChecks</BasicRuntimeChecks>
@@ -1793,9 +1795,11 @@
     <ClInclude Include="..\jpeg-6\jpegint.h" />
     <ClInclude Include="..\jpeg-6\jpeglib.h" />
     <ClInclude Include="..\jpeg-6\jversion.h" />
+    <ClInclude Include="..\miniz\miniz.h" />
     <ClInclude Include="..\qcommon\cm_public.h" />
     <ClInclude Include="..\qcommon\qcommon.h" />
     <ClInclude Include="..\qcommon\qfiles.h" />
+    <ClInclude Include="..\spng\spng.h" />
     <ClInclude Include="..\win32\glw_win.h" />
     <ClInclude Include="..\win32\win_local.h" />
     <ClInclude Include="qgl.h" />

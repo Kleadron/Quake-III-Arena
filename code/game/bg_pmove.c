@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -31,17 +32,17 @@ pmove_t		*pm;
 pml_t		pml;
 
 // movement parameters
-float	pm_stopspeed = 100.0f;
-float	pm_duckScale = 0.25f;
+float	pm_stopspeed = 50.0f;
+float	pm_duckScale = 0.50f;
 float	pm_swimScale = 0.50f;
 float	pm_wadeScale = 0.70f;
 
-float	pm_accelerate = 10.0f;
-float	pm_airaccelerate = 1.0f;
+float	pm_accelerate = 8.0f;
+float	pm_airaccelerate = 0.5f;
 float	pm_wateraccelerate = 4.0f;
 float	pm_flyaccelerate = 8.0f;
 
-float	pm_friction = 6.0f;
+float	pm_friction = 12.0f;
 float	pm_waterfriction = 1.0f;
 float	pm_flightfriction = 3.0f;
 float	pm_spectatorfriction = 5.0f;

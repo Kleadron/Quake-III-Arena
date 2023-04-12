@@ -5,6 +5,7 @@
 
 # Quake 3 stuff
 code/baseq3/
+code/ksoft_slayer/
 
 # User-specific files
 *.rsuser

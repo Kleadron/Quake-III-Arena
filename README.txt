@@ -1,3 +1,28 @@
+Kleadron Software id Tech 3 Fork
+================================
+
+This fork of the Quake III Arena engine is intended for Kleadron Software games.
+The currently developing prototype is "KSoft Slayer", a multiplayer and 
+singleplayer shooter. Source code is made available out of necessity, but you 
+can use this code repository to develop your own modification of the game.
+
+I likely won't be accepting pull requests for most things, as I'd like to
+write most of the code myself.
+
+Source code is still under the GPL v2 license, but game assets in any release
+of the game are not. You could develop your own game using this code, but you
+would need to recreate all of the assets. You might just want to make a mod instead.
+
+The engine itself will be modified to add necessary features for gameplay,
+or technical additions such as audio codecs, image formats, or model formats.
+I would like to try and keep ioquake3 support but it depends on how much the 
+engine gets changed.
+I may consider porting the project to ioquake3 or another source port in
+the future, but right now I decided to start off with a vanilla codebase.
+
+Original README.txt contents below:
+
+
 Quake III Arena GPL source release
 ==================================
 

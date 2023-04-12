@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -3140,7 +3141,7 @@ static bind_t g_bindings[] =
 	{"+moveleft", 	 ',',					-1,		-1, -1},
 	{"+moveright", 	 '.',					-1,		-1, -1},
 	{"+moveup",			 K_SPACE,			-1,		-1, -1},
-	{"+movedown",		 'c',					-1,		-1, -1},
+	{"+movedown",		 K_CTRL,					-1,		-1, -1},
 	{"+left", 			 K_LEFTARROW,	-1,		-1, -1},
 	{"+right", 			 K_RIGHTARROW,	-1,		-1, -1},
 	{"+strafe", 		 K_ALT,				-1,		-1, -1},
@@ -3162,7 +3163,7 @@ static bind_t g_bindings[] =
 	{"weapon 11",		 -1,					-1,		-1, -1},
 	{"weapon 12",		 -1,					-1,		-1, -1},
 	{"weapon 13",		 -1,					-1,		-1, -1},
-	{"+attack", 		 K_CTRL,				-1,		-1, -1},
+	{"+attack", 		 K_MOUSE1,				-1,		-1, -1},
 	{"weapprev",		 '[',					-1,		-1, -1},
 	{"weapnext", 		 ']',					-1,		-1, -1},
 	{"+button3", 		 K_MOUSE3,			-1,		-1, -1},

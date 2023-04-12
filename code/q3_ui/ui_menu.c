@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -221,12 +222,14 @@ static void Main_MenuDraw( void ) {
 		Menu_Draw( &s_main.menu );		
 	}
 
-	if (uis.demoversion) {
+	/*if (uis.demoversion) {
 		UI_DrawProportionalString( 320, 372, "DEMO      FOR MATURE AUDIENCES      DEMO", UI_CENTER|UI_SMALLFONT, color );
 		UI_DrawString( 320, 400, "Quake III Arena(c) 1999-2000, Id Software, Inc.  All Rights Reserved", UI_CENTER|UI_SMALLFONT, color );
 	} else {
 		UI_DrawString( 320, 450, "Quake III Arena(c) 1999-2000, Id Software, Inc.  All Rights Reserved", UI_CENTER|UI_SMALLFONT, color );
-	}
+	}*/
+	UI_DrawProportionalString(320, 400, "PROTOTYPE VERSION", UI_CENTER | UI_SMALLFONT, color);
+	UI_DrawString(320, 450, "KSoft Slayer (c) 2023 Kleadron Software", UI_CENTER | UI_SMALLFONT, color);
 }
 
 

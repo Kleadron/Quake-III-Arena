@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -2481,11 +2482,11 @@ void Com_Init( char *commandLine ) {
 	if ( !Com_AddStartupCommands() ) {
 		// if the user didn't give any commands, run default action
 		if ( !com_dedicated->integer ) {
-			Cbuf_AddText ("cinematic idlogo.RoQ\n");
+			/*Cbuf_AddText ("cinematic idlogo.RoQ\n");
 			if( !com_introPlayed->integer ) {
 				Cvar_Set( com_introPlayed->name, "1" );
 				Cvar_Set( "nextmap", "cinematic intro.RoQ" );
-			}
+			}*/
 		}
 	}
 

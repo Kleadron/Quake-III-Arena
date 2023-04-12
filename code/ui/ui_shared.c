@@ -3133,7 +3133,7 @@ typedef struct
 
 static bind_t g_bindings[] = 
 {
-	{"+scores",			 K_TAB,				-1,		-1, -1},
+	{"+scores",			 K_F1,				-1,		-1, -1},
 	{"+button2",		 K_ENTER,			-1,		-1, -1},
 	{"+speed", 			 K_SHIFT,			-1,		-1,	-1},
 	{"+forward", 		 K_UPARROW,		-1,		-1, -1},
@@ -3182,16 +3182,16 @@ static bind_t g_bindings[] =
 	{"taskEscort", 'e',					-1,		-1, -1},
 	{"taskOwnFlag", 'i',					-1,		-1, -1},
 	{"taskSuicide", 'k',					-1,		-1, -1},
-	{"tauntKillInsult", K_F1,			-1,		-1, -1},
-	{"tauntPraise", K_F2,			-1,		-1, -1},
-	{"tauntTaunt", K_F3,			-1,		-1, -1},
-	{"tauntDeathInsult", K_F4,			-1,		-1, -1},
-	{"tauntGauntlet", K_F5,			-1,		-1, -1},
+	{"tauntKillInsult", -1,			-1,		-1, -1},
+	{"tauntPraise", -1,			-1,		-1, -1},
+	{"tauntTaunt", -1,			-1,		-1, -1},
+	{"tauntDeathInsult", -1,			-1,		-1, -1},
+	{"tauntGauntlet", -1,			-1,		-1, -1},
 	{"scoresUp", K_KP_PGUP,			-1,		-1, -1},
 	{"scoresDown", K_KP_PGDN,			-1,		-1, -1},
 	// bk001205 - this one below was:  '-1' 
-	{"messagemode",  -1,					-1,		-1, -1},
-	{"messagemode2", -1,						-1,		-1, -1},
+	{"messagemode",  't',					-1,		-1, -1},
+	{"messagemode2", 'u',						-1,		-1, -1},
 	{"messagemode3", -1,						-1,		-1, -1},
 	{"messagemode4", -1,						-1,		-1, -1}
 };

@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -1229,7 +1230,7 @@ void UI_Refresh( int realtime )
 
 	// draw cursor
 	UI_SetColor( NULL );
-	UI_DrawHandlePic( uis.cursorx-16, uis.cursory-16, 32, 32, uis.cursor);
+	UI_DrawHandlePic( uis.cursorx, uis.cursory, 16, 16, uis.cursor);
 
 #ifndef NDEBUG
 	if (uis.debug)

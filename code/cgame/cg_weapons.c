@@ -797,6 +797,7 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->flashSound[3] = trap_S_RegisterSound( "sound/weapons/machinegun/machgf4b.wav", qfalse );
 		weaponInfo->ejectBrassFunc = CG_MachineGunEjectBrass;
 		cgs.media.bulletExplosionShader = trap_R_RegisterShader( "bulletExplosion" );
+		cgs.media.mgBulletTrailShader = trap_R_RegisterShader("mgBulletTrail");
 		break;
 
 	case WP_SHOTGUN:

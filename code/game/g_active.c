@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -1015,6 +1016,19 @@ void ClientThink_real( gentity_t *ent ) {
 
 	// perform once-a-second actions
 	ClientTimerActions( ent, msec );
+
+	// decay weapon spread timer
+
+	if (!(ent->client->ps.eFlags & EF_FIRING))
+	{
+		client->weaponSpreadTime -= msec;
+
+		if (client->weaponSpreadTime < 0)
+		{
+			client->weaponSpreadTime = 0;
+		}
+	}
+	
 }
 
 /*

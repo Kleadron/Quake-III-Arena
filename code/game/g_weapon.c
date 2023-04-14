@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -149,13 +150,6 @@ void SnapVectorTowards( vec3_t v, vec3_t to ) {
 	}
 }
 
-#ifdef MISSIONPACK
-#define CHAINGUN_SPREAD		600
-#endif
-#define MACHINEGUN_SPREAD	200
-#define	MACHINEGUN_DAMAGE	7
-#define	MACHINEGUN_TEAM_DAMAGE	5		// wimpier MG in teamplay
-
 void Bullet_Fire (gentity_t *ent, float spread, int damage ) {
 	trace_t		tr;
 	vec3_t		end;
@@ -203,6 +197,31 @@ void Bullet_Fire (gentity_t *ent, float spread, int damage ) {
 		}
 		tent->s.otherEntityNum = ent->s.number;
 
+
+
+		// send mg trail effect
+		tent = G_TempEntity(tr.endpos, EV_GENERIC_BULLET_TRAIL);
+
+		// set player number for custom colors on the railtrail
+		tent->s.clientNum = ent->s.clientNum;
+
+		VectorCopy(muzzle, tent->s.origin2);
+		// move origin a bit to come closer to the drawn gun muzzle
+		VectorMA(tent->s.origin2, 3.7, right, tent->s.origin2);
+		VectorMA(tent->s.origin2, -4, up, tent->s.origin2);
+		VectorMA(tent->s.origin2, 4, forward, tent->s.origin2);
+
+		// no explosion at end if SURF_NOIMPACT, but still make the trail
+		if (tr.surfaceFlags & SURF_NOIMPACT) {
+			tent->s.eventParm = 255;	// don't make the explosion at the end
+		}
+		else {
+			tent->s.eventParm = DirToByte(tr.plane.normal);
+	}
+		tent->s.clientNum = ent->s.clientNum;
+
+
+
 		if ( traceEnt->takedamage) {
 #ifdef MISSIONPACK
 			if ( traceEnt->client && traceEnt->client->invulnerabilityTime > level.time ) {
@@ -230,6 +249,36 @@ void Bullet_Fire (gentity_t *ent, float spread, int damage ) {
 	}
 }
 
+
+#ifdef MISSIONPACK
+#define CHAINGUN_SPREAD		600
+#endif
+#define MACHINEGUN_SPREAD_INITIAL	300
+#define MACHINEGUN_SPREAD_MAX		800
+#define MACHINEGUN_SPREAD_TIME		500		// milliseconds
+#define MACHINEGUN_SPREAD_PER_SHOT	60
+#define	MACHINEGUN_DAMAGE			7
+#define	MACHINEGUN_TEAM_DAMAGE		5		// wimpier MG in teamplay
+
+void Weapon_MachineGun_Fire(gentity_t *ent)
+{
+	float mgspread = MACHINEGUN_SPREAD_INITIAL;
+	float mgspread_dif = MACHINEGUN_SPREAD_MAX - MACHINEGUN_SPREAD_INITIAL;
+
+	mgspread += mgspread_dif * ((float)ent->client->weaponSpreadTime / (float)MACHINEGUN_SPREAD_TIME);
+	ent->client->weaponSpreadTime += MACHINEGUN_SPREAD_PER_SHOT;
+	if (ent->client->weaponSpreadTime > MACHINEGUN_SPREAD_TIME)
+	{
+		ent->client->weaponSpreadTime = MACHINEGUN_SPREAD_TIME;
+	}
+
+	if (g_gametype.integer != GT_TEAM) {
+		Bullet_Fire(ent, mgspread, MACHINEGUN_DAMAGE);
+	}
+	else {
+		Bullet_Fire(ent, mgspread, MACHINEGUN_TEAM_DAMAGE);
+	}
+}
 
 /*
 ======================================================================
@@ -266,6 +315,7 @@ qboolean ShotgunPellet( vec3_t start, vec3_t end, gentity_t *ent ) {
 	trace_t		tr;
 	int			damage, i, passent;
 	gentity_t	*traceEnt;
+	gentity_t	*tent;
 #ifdef MISSIONPACK
 	vec3_t		impactpoint, bouncedir;
 #endif
@@ -282,6 +332,29 @@ qboolean ShotgunPellet( vec3_t start, vec3_t end, gentity_t *ent ) {
 		if (  tr.surfaceFlags & SURF_NOIMPACT ) {
 			return qfalse;
 		}
+
+
+		// send mg trail effect
+		tent = G_TempEntity(tr.endpos, EV_GENERIC_BULLET_TRAIL);
+
+		// set player number for custom colors on the railtrail
+		tent->s.clientNum = ent->s.clientNum;
+
+		VectorCopy(muzzle, tent->s.origin2);
+		// move origin a bit to come closer to the drawn gun muzzle
+		VectorMA(tent->s.origin2, 3.7, right, tent->s.origin2);
+		VectorMA(tent->s.origin2, -4, up, tent->s.origin2);
+		VectorMA(tent->s.origin2, 4, forward, tent->s.origin2);
+
+		// no explosion at end if SURF_NOIMPACT, but still make the trail
+		if (tr.surfaceFlags & SURF_NOIMPACT) {
+			tent->s.eventParm = 255;	// don't make the explosion at the end
+		}
+		else {
+			tent->s.eventParm = DirToByte(tr.plane.normal);
+		}
+		tent->s.clientNum = ent->s.clientNum;
+
 
 		if ( traceEnt->takedamage) {
 			damage = DEFAULT_SHOTGUN_DAMAGE * s_quadFactor;
@@ -810,6 +883,8 @@ FireWeapon
 ===============
 */
 void FireWeapon( gentity_t *ent ) {
+	
+
 	if (ent->client->ps.powerups[PW_QUAD] ) {
 		s_quadFactor = g_quadfactor.value;
 	} else {
@@ -851,11 +926,7 @@ void FireWeapon( gentity_t *ent ) {
 		weapon_supershotgun_fire( ent );
 		break;
 	case WP_MACHINEGUN:
-		if ( g_gametype.integer != GT_TEAM ) {
-			Bullet_Fire( ent, MACHINEGUN_SPREAD, MACHINEGUN_DAMAGE );
-		} else {
-			Bullet_Fire( ent, MACHINEGUN_SPREAD, MACHINEGUN_TEAM_DAMAGE );
-		}
+		Weapon_MachineGun_Fire( ent );
 		break;
 	case WP_GRENADE_LAUNCHER:
 		weapon_grenadelauncher_fire( ent );

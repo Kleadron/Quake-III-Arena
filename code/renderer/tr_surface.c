@@ -335,6 +335,61 @@ void RB_SurfaceBeam( void )
 
 //================================================================================
 
+static void DoGenericBulletTrail(const vec3_t start, const vec3_t end, const vec3_t up, float len, float spanWidth)
+{
+	float		spanWidth2;
+	int			vbase;
+	float		t = 1;//len / 256.0f;
+
+	vbase = tess.numVertexes;
+
+	spanWidth2 = -spanWidth;
+
+	// FIXME: use quad stamp?
+	VectorMA(start, spanWidth, up, tess.xyz[tess.numVertexes]);
+	tess.texCoords[tess.numVertexes][0][0] = 0;
+	tess.texCoords[tess.numVertexes][0][1] = 0;
+	tess.vertexColors[tess.numVertexes][0] = backEnd.currentEntity->e.shaderRGBA[0] * 0.25;
+	tess.vertexColors[tess.numVertexes][1] = backEnd.currentEntity->e.shaderRGBA[1] * 0.25;
+	tess.vertexColors[tess.numVertexes][2] = backEnd.currentEntity->e.shaderRGBA[2] * 0.25;
+	tess.numVertexes++;
+
+	VectorMA(start, spanWidth2, up, tess.xyz[tess.numVertexes]);
+	tess.texCoords[tess.numVertexes][0][0] = 0;
+	tess.texCoords[tess.numVertexes][0][1] = 1;
+	tess.vertexColors[tess.numVertexes][0] = backEnd.currentEntity->e.shaderRGBA[0];
+	tess.vertexColors[tess.numVertexes][1] = backEnd.currentEntity->e.shaderRGBA[1];
+	tess.vertexColors[tess.numVertexes][2] = backEnd.currentEntity->e.shaderRGBA[2];
+	tess.numVertexes++;
+
+	VectorMA(end, spanWidth, up, tess.xyz[tess.numVertexes]);
+
+	tess.texCoords[tess.numVertexes][0][0] = t;
+	tess.texCoords[tess.numVertexes][0][1] = 0;
+	tess.vertexColors[tess.numVertexes][0] = backEnd.currentEntity->e.shaderRGBA[0];
+	tess.vertexColors[tess.numVertexes][1] = backEnd.currentEntity->e.shaderRGBA[1];
+	tess.vertexColors[tess.numVertexes][2] = backEnd.currentEntity->e.shaderRGBA[2];
+	tess.numVertexes++;
+
+	VectorMA(end, spanWidth2, up, tess.xyz[tess.numVertexes]);
+	tess.texCoords[tess.numVertexes][0][0] = t;
+	tess.texCoords[tess.numVertexes][0][1] = 1;
+	tess.vertexColors[tess.numVertexes][0] = backEnd.currentEntity->e.shaderRGBA[0];
+	tess.vertexColors[tess.numVertexes][1] = backEnd.currentEntity->e.shaderRGBA[1];
+	tess.vertexColors[tess.numVertexes][2] = backEnd.currentEntity->e.shaderRGBA[2];
+	tess.numVertexes++;
+
+	tess.indexes[tess.numIndexes++] = vbase;
+	tess.indexes[tess.numIndexes++] = vbase + 1;
+	tess.indexes[tess.numIndexes++] = vbase + 2;
+
+	tess.indexes[tess.numIndexes++] = vbase + 2;
+	tess.indexes[tess.numIndexes++] = vbase + 1;
+	tess.indexes[tess.numIndexes++] = vbase + 3;
+}
+
+//================================================================================
+
 static void DoRailCore( const vec3_t start, const vec3_t end, const vec3_t up, float len, float spanWidth )
 {
 	float		spanWidth2;
@@ -506,6 +561,36 @@ void RB_SurfaceRailCore( void ) {
 	VectorNormalize( right );
 
 	DoRailCore( start, end, right, len, r_railCoreWidth->integer );
+}
+
+/*
+** RB_SurfaceRailCore
+*/
+void RB_SurfaceGenericBulletTrail(void) {
+	refEntity_t *e;
+	int			len;
+	vec3_t		right;
+	vec3_t		vec;
+	vec3_t		start, end;
+	vec3_t		v1, v2;
+
+	e = &backEnd.currentEntity->e;
+
+	VectorCopy(e->oldorigin, start);
+	VectorCopy(e->origin, end);
+
+	VectorSubtract(end, start, vec);
+	len = VectorNormalize(vec);
+
+	// compute side vector
+	VectorSubtract(start, backEnd.viewParms. or .origin, v1);
+	VectorNormalize(v1);
+	VectorSubtract(end, backEnd.viewParms. or .origin, v2);
+	VectorNormalize(v2);
+	CrossProduct(v1, v2, right);
+	VectorNormalize(right);
+
+	DoGenericBulletTrail(start, end, right, len, r_railCoreWidth->integer);
 }
 
 /*
@@ -1110,6 +1195,9 @@ void RB_SurfaceEntity( surfaceType_t *surfType ) {
 		break;
 	case RT_RAIL_RINGS:
 		RB_SurfaceRailRings();
+		break;
+	case RT_GENERIC_BULLET_TRAIL:
+		RB_SurfaceGenericBulletTrail();
 		break;
 	case RT_LIGHTNING:
 		RB_SurfaceLightningBolt();

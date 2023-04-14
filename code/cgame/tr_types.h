@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -67,6 +68,7 @@ typedef enum {
 	RT_RAIL_RINGS,
 	RT_LIGHTNING,
 	RT_PORTALSURFACE,		// doesn't draw anything, just info for portals
+	RT_GENERIC_BULLET_TRAIL,
 
 	RT_MAX_REF_ENTITY_TYPE
 } refEntityType_t;

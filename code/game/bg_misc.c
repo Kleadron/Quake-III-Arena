@@ -1,6 +1,7 @@
 /*
 ===========================================================================
 Copyright (C) 1999-2005 Id Software, Inc.
+Copyright (C) 2023 Kleadron Software
 
 This file is part of Quake III Arena source code.
 
@@ -1373,7 +1374,15 @@ char *eventnames[] = {
 
 	"EV_DEBUG_LINE",
 	"EV_STOPLOOPINGSOUND",
-	"EV_TAUNT"
+	"EV_TAUNT",
+	"EV_TAUNT_YES",
+	"EV_TAUNT_NO",
+	"EV_TAUNT_FOLLOWME",
+	"EV_TAUNT_GETFLAG",
+	"EV_TAUNT_GUARDBASE",
+	"EV_TAUNT_PATROL",
+
+	"EV_GENERIC_BULLET_TRAIL",
 
 };
 

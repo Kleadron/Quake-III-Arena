@@ -320,6 +320,71 @@ void CG_RailTrail (clientInfo_t *ci, vec3_t start, vec3_t end) {
 
 /*
 ==========================
+CG_MachineGunTrail
+==========================
+*/
+void CG_GenericBulletTrail(clientInfo_t *ci, vec3_t start, vec3_t end) {
+	vec3_t axis[36], move, move2, next_move, vec, temp;
+	float  len;
+	int    i, j, skip;
+
+	localEntity_t *le;
+	refEntity_t   *re;
+
+#define RADIUS   3
+#define ROTATION 1
+#define SPACING  5
+
+	start[2] -= 4;
+	VectorCopy(start, move);
+	VectorSubtract(end, start, vec);
+	len = VectorNormalize(vec);
+	PerpendicularVector(temp, vec);
+	for (i = 0; i < 36; i++) {
+		RotatePointAroundVector(axis[i], vec, temp, i * 10);//banshee 2.4 was 10
+	}
+
+	le = CG_AllocLocalEntity();
+	re = &le->refEntity;
+
+	le->leType = LE_FADE_RGB;
+	le->startTime = cg.time;
+	le->endTime = cg.time + cg_railTrailTime.value;
+	le->lifeRate = 1.0 / (le->endTime - le->startTime);
+
+	re->shaderTime = cg.time / 1000.0f;
+	re->reType = RT_GENERIC_BULLET_TRAIL;
+	re->customShader = cgs.media.mgBulletTrailShader;
+
+	VectorCopy(start, re->origin);
+	VectorCopy(end, re->oldorigin);
+
+	re->shaderRGBA[0] = 255;//ci->color1[0] * 255;
+	re->shaderRGBA[1] = 255;//ci->color1[1] * 255;
+	re->shaderRGBA[2] = 255;//ci->color1[2] * 255;
+	re->shaderRGBA[3] = 255;
+
+	le->color[0] = 1;//ci->color1[0] * 0.75;
+	le->color[1] = 1;//ci->color1[1] * 0.75;
+	le->color[2] = 1;//ci->color1[2] * 0.75;
+	le->color[3] = 1.0f;
+
+	AxisClear(re->axis);
+
+	VectorMA(move, 20, vec, move);
+	VectorCopy(move, next_move);
+	VectorScale(vec, SPACING, vec);
+
+	//if (cg_oldRail.integer != 0) {
+	//	// nudge down a bit so it isn't exactly in center
+	//	re->origin[2] -= 8;
+	//	re->oldorigin[2] -= 8;
+	//	return;
+	//}
+}
+
+/*
+==========================
 CG_RocketTrail
 ==========================
 */

@@ -12,10 +12,9 @@ would need to recreate all of the assets. You might just want to make a mod inst
 
 The engine itself will be modified to add necessary features for gameplay,
 or technical additions such as audio codecs, image formats, or model formats.
-I would like to try and keep ioquake3 support but it depends on how much the 
-engine gets changed.
 I may consider porting the project to ioquake3 or another source port in
 the future, but right now I decided to start off with a vanilla codebase.
+We'll see if that becomes an awful decision!
 
 Original README.txt contents below:
 

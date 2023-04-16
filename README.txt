@@ -6,9 +6,6 @@ The currently developing prototype is "KSoft Slayer", a multiplayer and
 singleplayer shooter. Source code is made available out of necessity, but you 
 can use this code repository to develop your own modification of the game.
 
-I likely won't be accepting pull requests for most things, as I'd like to
-write most of the code myself.
-
 Source code is still under the GPL v2 license, but game assets in any release
 of the game are not. You could develop your own game using this code, but you
 would need to recreate all of the assets. You might just want to make a mod instead.
